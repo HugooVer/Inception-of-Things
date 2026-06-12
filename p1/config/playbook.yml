@@ -9,8 +9,6 @@
 - name: k3s Server configuration
   hosts: HugoS
   become: true
-  environment:
-        install_k3s_exec: --flannel-backend none --token 12345
   roles:
     - server
 
