@@ -1,0 +1,23 @@
+---
+
+- name: Install K3s in server mode
+  ansible.builtin.shell: curl -sfL https://get.k3s.io | sh -
+  environment:
+    INSTALL_K3S_EXEC: "server --node-ip=192.168.56.110 --flannel-backend=none"
+
+- name: Wait for K3s node-token to be generated
+  ansible.builtin.wait_for:
+    path: /var/lib/rancher/k3s/server/node-token
+
+- name: Read the generated node-token file
+  ansible.builtin.slurp:
+    src: /var/lib/rancher/k3s/server/node-token
+  register: k3s_token_raw
+
+- name: Decode token and store it as a usable fact
+  ansible.builtin.set_fact:
+    k3s_server_token: "{{ k3s_token_raw['content'] | b64decode | trim }}"
+
+- name: Display the token (Optional, for debugging)
+  ansible.builtin.debug:
+    msg: "The K3s Server token is: {{ k3s_server_token }}"
