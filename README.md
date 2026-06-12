@@ -46,3 +46,6 @@ sudo lvextend -l +100%FREE /dev/mapper/ubuntu--vg-ubuntu--lv
 
 # Resize the filesystem to fill the newly extended volume
 sudo resize2fs /dev/mapper/ubuntu--vg-ubuntu--lv -->
+
+
+<!-- Dont forget to install requirement : ansible-galaxy collection install -r config/requirements.yml -->

@@ -9,7 +9,7 @@
     update_cache: true
 
 - name: Disable UFW firewall to allow K3s internal traffic
-  ansible.builtin.ufw:
+  community.general.ufw:
     state: disabled
 
 - name: Configure local hostname resolution in /etc/hosts
