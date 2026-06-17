@@ -1,0 +1,13 @@
+---
+
+- name: Comon configuration
+  hosts: all
+  become: true
+  roles:
+    - common
+
+- name: k3s Server configuration
+  hosts: HugoS
+  become: true
+  roles:
+    - server

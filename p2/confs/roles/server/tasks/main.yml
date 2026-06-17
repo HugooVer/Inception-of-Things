@@ -1,0 +1,6 @@
+---
+
+- name: Install K3s in server mode
+  ansible.builtin.shell: curl -sfL https://get.k3s.io | sh -
+  environment:
+    INSTALL_K3S_EXEC: "server --node-ip=192.168.56.110"

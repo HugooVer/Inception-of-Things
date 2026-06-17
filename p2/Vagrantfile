@@ -1,0 +1,30 @@
+
+nodes = [
+  { :hostname => 'HugoS', :ip => '192.168.56.110', :box => 'bento/ubuntu-24.04', :version => '202508.03.0', :ram => 512 }
+]
+
+Vagrant.configure("2") do |config|
+  nodes.each do |node|
+    config.vm.define node[:hostname] do |nodeconfig|
+      nodeconfig.vm.box = node[:box]
+      nodeconfig.vm.box_version = node[:version]
+      nodeconfig.vm.hostname = node[:hostname]
+      nodeconfig.vm.network :private_network, ip: node[:ip]
+
+      nodeconfig.vm.provider :libvirt do |libvirt|
+        libvirt.driver = "kvm"
+        libvirt.memory = node[:ram]
+        libvirt.cpus = 1
+        libvirt.cpu_mode = "host-passthrough"
+        libvirt.graphics_type = "none"
+        libvirt.video_type = "none"
+      end
+      if node == nodes.last
+        nodeconfig.vm.provision "ansible" do |ansible|
+          ansible.playbook = "confs/playbook.yml"
+          ansible.limit = "all"
+        end
+      end
+    end
+  end
+end

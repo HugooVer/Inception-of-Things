@@ -1,0 +1,21 @@
+---
+
+- name: Update apt cache and install essential packages
+  ansible.builtin.apt:
+    name:
+      - curl
+      - ca-certificates
+    state: present
+    update_cache: true
+
+- name: Disable UFW firewall to allow K3s internal traffic
+  community.general.ufw:
+    state: disabled
+
+- name: Configure local hostname resolution in /etc/hosts
+  ansible.builtin.lineinfile:
+    path: /etc/hosts
+    line: "{{ item.ip }} {{ item.hostname }}"
+    state: present
+  loop:
+    - { ip: '192.168.56.110', hostname: 'HugoS' }
