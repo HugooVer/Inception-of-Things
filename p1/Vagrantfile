@@ -19,7 +19,9 @@ Vagrant.configure("2") do |config|
         libvirt.cpu_mode = "host-passthrough"
         libvirt.graphics_type = "none"
         libvirt.video_type = "none"
-      end
+      end          # ansible.extra_vars = {
+          #   ansible_user: "vagrant"
+          # }
       if node == nodes.last
         nodeconfig.vm.provision "ansible" do |ansible|
           ansible.playbook = "confs/playbook.yml"
