@@ -49,3 +49,30 @@ sudo resize2fs /dev/mapper/ubuntu--vg-ubuntu--lv -->
 
 
 <!-- Dont forget to install requirement : ansible-galaxy collection install -r confs/requirements.yml -->
+
+To give acees to the vagrant vm from the main host some configuration are needed.
+Since I use a head less VM and i need to acces to web page in the part 2 somme fowarding are neded.
+
+## Accessing Nested K3s Network (Host -> Hypervisor -> VM)
+
+#### Since the hypervisor is a headless server, this routing configuration is required to access the web applications deployed in Part 2 directly from the physical host's browser.
+
+
+#### 1. On the Hypervisor (Ubuntu Server)
+```bash
+# Enable IPv4 forwarding on the fly
+sudo sysctl -w net.ipv4.ip_forward=1
+
+# Allow traffic in and out of the Vagrant subnet (bypass libvirt isolation)
+sudo iptables -I FORWARD -d 192.168.56.0/24 -j ACCEPT
+sudo iptables -I FORWARD -s 192.168.56.0/24 -j ACCEPT
+```
+
+#### 2. On Physical Host
+```bash
+# Add static route
+sudo ip route add 192.168.56.0/24 via <HYPERVISOR_IP>
+
+# Test the connection to the Vagrant K3s virtual machine
+ping 192.168.56.110
+```
