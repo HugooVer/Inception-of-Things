@@ -48,4 +48,4 @@ sudo lvextend -l +100%FREE /dev/mapper/ubuntu--vg-ubuntu--lv
 sudo resize2fs /dev/mapper/ubuntu--vg-ubuntu--lv -->
 
 
-<!-- Dont forget to install requirement : ansible-galaxy collection install -r config/requirements.yml -->
+<!-- Dont forget to install requirement : ansible-galaxy collection install -r confs/requirements.yml -->
