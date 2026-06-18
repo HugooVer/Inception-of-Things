@@ -1,0 +1,12 @@
+---
+
+k3s_apps:
+  - app_name: "app-one"
+    container_image: "nginx:latest"
+    replica_count: 1
+  - app_name: "app-two"
+    container_image: "nginx:latest"
+    replica_count: 3
+  - app_name: "app-three"
+    container_image: "nginx:latest"
+    replica_count: 1

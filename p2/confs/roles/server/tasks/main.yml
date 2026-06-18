@@ -4,3 +4,12 @@
   ansible.builtin.shell: curl -sfL https://get.k3s.io | sh -
   environment:
     INSTALL_K3S_EXEC: "server --node-ip=192.168.56.110"
+
+- name: Deploy app on k3s via auto-Deploy
+  ansible.builtin.template:
+    src: templates/deployment.yml.j2
+    dest: /var/lib/rancher/k3s/server/manifests/{{ item.app_name }}-stack.yaml
+    owner: root
+    group: root
+    mode: '0644'
+  loop: "{{ k3s_apps }}"

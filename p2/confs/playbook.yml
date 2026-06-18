@@ -9,5 +9,7 @@
 - name: k3s Server configuration
   hosts: HugoS
   become: true
+  vars_files:
+    - vars.yml
   roles:
     - server
