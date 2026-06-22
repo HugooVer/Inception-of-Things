@@ -18,4 +18,50 @@ spec:
         - name: "{{ item.app_name }}-container"
           image: "{{ item.container_image }}"
           ports:
-            - containerPort: 80
+            - containerPort: 8080
+          env:
+            - name: MESSAGE
+              value: "Hello from {{ item.app_name }}"
+
+---
+# Define the internal Service network
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ item.app_name }}-svc"
+spec:
+  selector:
+    app: "{{ item.app_name }}"
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+
+---
+# Define the external routing
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: "{{ item.app_name }}-ingress"
+spec:
+  {% if item.routing_host is defined %}
+  # Specific routing rules for apps with a defined host
+  rules:
+    - host: "{{ item.routing_host }}"
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: "{{ item.app_name }}-svc"
+                port:
+                  number: 80
+  {% else %}
+  # Catch-all default routing for the fallback app
+  defaultBackend:
+    service:
+      name: "{{ item.app_name }}-svc"
+      port:
+        number: 80
+  {% endif %}

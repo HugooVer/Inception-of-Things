@@ -2,11 +2,16 @@
 
 k3s_apps:
   - app_name: "app-one"
-    container_image: "nginx:latest"
+    container_image: "paulbouwer/hello-kubernetes:1.10"
     replica_count: 1
+    routing_host: "app1.com"
+
   - app_name: "app-two"
-    container_image: "nginx:latest"
+    container_image: "paulbouwer/hello-kubernetes:1.10"
     replica_count: 3
+    routing_host: "app2.com"
+
   - app_name: "app-three"
-    container_image: "nginx:latest"
+    container_image: "paulbouwer/hello-kubernetes:1.10"
     replica_count: 1
+
